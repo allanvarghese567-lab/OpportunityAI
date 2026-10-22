@@ -48,8 +48,8 @@ async def dispatch_event(
                     content=body_bytes,
                     headers={
                         "Content-Type": "application/json",
-                        "X-OpportunityAI-Event": event,
-                        "X-OpportunityAI-Signature": signature,
+                        "X-ArthaAI-Event": event,
+                        "X-ArthaAI-Signature": signature,
                     },
                 )
                 attempts += 1

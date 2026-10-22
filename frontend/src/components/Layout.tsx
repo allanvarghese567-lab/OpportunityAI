@@ -24,7 +24,7 @@ export default function Layout({ user, onLogout, children }: LayoutProps) {
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4 sm:gap-8">
             <Link to="/" className="font-semibold text-lg tracking-tight" onClick={() => setMenuOpen(false)}>
-              Opportunity<span className="text-blue-600">AI</span>
+              ARTHA<span className="text-blue-600"> AI</span>
             </Link>
             <nav className="hidden sm:flex gap-1">
               {nav.map((item) => {
