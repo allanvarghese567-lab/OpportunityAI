@@ -6,6 +6,8 @@ import DashboardPage from "./pages/DashboardPage";
 import NewProjectPage from "./pages/NewProjectPage";
 import ProjectDetailPage from "./pages/ProjectDetailPage";
 import ResearchWorkspacePage from "./pages/ResearchWorkspacePage";
+import OpportunityExplorerPage from "./pages/OpportunityExplorerPage";
+import OpportunityDetailPage from "./pages/OpportunityDetailPage";
 import Layout from "./components/Layout";
 
 function App() {
@@ -44,6 +46,8 @@ function App() {
         <Route path="/projects/new" element={<NewProjectPage />} />
         <Route path="/projects/:id" element={<ProjectDetailPage />} />
         <Route path="/projects/:id/research" element={<ResearchWorkspacePage />} />
+        <Route path="/projects/:id/opportunities" element={<OpportunityExplorerPage />} />
+        <Route path="/projects/:id/opportunities/:oppId" element={<OpportunityDetailPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>
