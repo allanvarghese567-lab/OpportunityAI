@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import NewProjectPage from "./pages/NewProjectPage";
 import ProjectDetailPage from "./pages/ProjectDetailPage";
+import ResearchWorkspacePage from "./pages/ResearchWorkspacePage";
 import Layout from "./components/Layout";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/" element={<DashboardPage />} />
         <Route path="/projects/new" element={<NewProjectPage />} />
         <Route path="/projects/:id" element={<ProjectDetailPage />} />
+        <Route path="/projects/:id/research" element={<ResearchWorkspacePage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>
