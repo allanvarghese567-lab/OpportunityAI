@@ -2,40 +2,68 @@
 
 **AI-Powered Opportunity Research & Execution Platform**
 
-A multi-agent business opportunity platform built with **React + TypeScript + FastAPI + Python**.
+Multi-agent business opportunity platform — **React + TypeScript + FastAPI + Python + LangGraph**.
 
-## Overview
+## Current Status: Phase 1 – Foundation ✅
 
-Users configure their financial objective first. AI agents then:
+You can already:
 
-1. **Research** markets and discover opportunities  
-2. **Analyze** financial scenarios (best / base / downside)  
-3. **Validate** evidence and risk  
-4. **Recommend** the best strategy  
-5. **Execute** only after explicit user approval  
+1. Register / Login
+2. Create projects
+3. Run the full multi-step Configuration Wizard
+4. Confirm configuration (immutable snapshot)
+5. View project details
 
-Core example: Start with ₹1 → reach ₹2 ending cash in one day by finding a realistic, legitimate product/service/resale/commission opportunity.
+## Quick Start
 
-## Master Development Prompt
+### Prerequisites
+- Node.js 20+
+- Python 3.11+
+- PostgreSQL 15+ (or just use Docker)
 
-The complete specification that a coding agent can use to build the full application is in:
+### 1. Start the database (Docker)
+```bash
+docker-compose up -d db
+```
 
-**[MASTER_DEVELOPMENT_PROMPT.md](./MASTER_DEVELOPMENT_PROMPT.md)**
+### 2. Backend
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+# edit .env if needed
 
-This prompt covers:
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+API docs → http://localhost:8000/docs
 
-- Full technology stack
-- Multi-agent architecture (LangGraph)
-- Frontend screens & UX
-- Backend architecture & security
-- Implementation phases
-- Acceptance criteria
+### 3. Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+App → http://localhost:5173
 
-## Source
+## What was built in Phase 1
 
-Originally generated from a shared ChatGPT conversation:
-https://chatgpt.com/s/t_6ad9d6c7ea1c8191a3fe9bb9fc225d94
+- [x] Monorepo structure
+- [x] FastAPI backend with JWT auth
+- [x] SQLAlchemy models: User, Project, Configuration
+- [x] Project CRUD + Configuration versioning + Confirm endpoint
+- [x] React frontend (Vite + TypeScript + Tailwind)
+- [x] Login / Register
+- [x] Dashboard with project cards
+- [x] Full 7-step Configuration Wizard
+- [x] Project detail view
 
-## License
+## Next: Phase 2
 
-This repository contains the development prompt and scaffolding guidance. Implementation details depend on the agent that builds the application.
+- LangGraph multi-agent workflow
+- Market Researcher agent
+- SSE live progress streaming
+- Research Workspace UI
+
+Full specification: [MASTER_DEVELOPMENT_PROMPT.md](./MASTER_DEVELOPMENT_PROMPT.md)
