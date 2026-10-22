@@ -19,6 +19,7 @@ const AGENT_META: Record<string, { label: string; icon: any; color: string }> = 
   configuration_validator: { label: "Config Validator", icon: Shield, color: "text-slate-600" },
   market_researcher: { label: "Market Researcher", icon: Search, color: "text-blue-600" },
   financial_analyst: { label: "Financial Analyst", icon: Calculator, color: "text-purple-600" },
+  scenario_planner: { label: "Scenario Planner", icon: Calculator, color: "text-indigo-600" },
   risk_validator: { label: "Risk Validator", icon: AlertTriangle, color: "text-amber-600" },
   executor: { label: "Executor", icon: Trophy, color: "text-green-600" },
   workflow: { label: "Workflow", icon: CheckCircle2, color: "text-slate-800" },
@@ -87,6 +88,9 @@ export default function ResearchWorkspacePage() {
               if (evt.agent === "financial_analyst" && evt.type === "result") {
                 setOpportunities(evt.data?.opportunities || []);
               }
+              if (evt.agent === "scenario_planner" && evt.type === "result") {
+                if (evt.data?.opportunities) setOpportunities(evt.data.opportunities);
+              }
               if (evt.agent === "risk_validator" && evt.type === "result") {
                 setOpportunities(evt.data?.opportunities || []);
               }
@@ -94,6 +98,13 @@ export default function ResearchWorkspacePage() {
                 setRecommendation(evt.data?.recommendation || null);
                 if (evt.data?.ranked_opportunities) {
                   setOpportunities(evt.data.ranked_opportunities);
+                  sessionStorage.setItem(
+                    `research-results-${projectId}`,
+                    JSON.stringify({
+                      opportunities: evt.data.ranked_opportunities,
+                      recommendation: evt.data.recommendation,
+                    })
+                  );
                 }
               }
               if (evt.type === "done") {
@@ -149,9 +160,7 @@ export default function ResearchWorkspacePage() {
                   <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${meta.color}`} />
                   <div>
                     <span className="font-medium text-xs text-slate-500">{meta.label}</span>
-                    <p className={evt.type === "error" ? "text-red-600" : evt.type === "warning" ? "text-amber-700" : "text-slate-800"}>
-                      {evt.message}
-                    </p>
+                    <p className={evt.type === "error" ? "text-red-600" : evt.type === "warning" ? "text-amber-700" : "text-slate-800"}>{evt.message}</p>
                   </div>
                 </div>
               );
@@ -165,6 +174,14 @@ export default function ResearchWorkspacePage() {
         </div>
 
         <div className="lg:col-span-3 space-y-4">
+          {done && opportunities.length > 0 && (
+            <div className="flex justify-end">
+              <Link to={`/projects/${projectId}/opportunities`} className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline">
+                Open Opportunity Explorer →
+              </Link>
+            </div>
+          )}
+
           {recommendation && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-5">
               <div className="flex items-center gap-2 mb-2">
@@ -194,7 +211,8 @@ export default function ResearchWorkspacePage() {
               <h2 className="font-semibold mb-3">Opportunities ({opportunities.length})</h2>
               <div className="space-y-3">
                 {opportunities.map((opp, i) => (
-                  <div key={i} className="bg-white border rounded-xl p-4 hover:border-blue-200 transition-colors">
+                  <Link key={i} to={`/projects/${projectId}/opportunities/${encodeURIComponent(opp.id || opp.name)}`}
+                    className="block bg-white border rounded-xl p-4 hover:border-blue-200 transition-colors">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <h3 className="font-medium">{opp.name}</h3>
@@ -211,14 +229,9 @@ export default function ResearchWorkspacePage() {
                       <span>Cost: {latestConfig?.currency} {opp.estimated_acquisition_cost}</span>
                       <span>Sell: {latestConfig?.currency} {opp.observed_selling_price_low}–{opp.observed_selling_price_high}</span>
                       <span>Time: {opp.estimated_time_to_sale}</span>
-                      {opp.financials && (
-                        <span className="text-blue-600 font-medium">Net: {latestConfig?.currency} {opp.financials.net_profit}</span>
-                      )}
+                      {opp.financials && <span className="text-blue-600 font-medium">Net: {latestConfig?.currency} {opp.financials.net_profit}</span>}
                     </div>
-                    {opp.main_risks?.length > 0 && (
-                      <p className="text-xs text-amber-700 mt-2">Risks: {opp.main_risks.join(" · ")}</p>
-                    )}
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
