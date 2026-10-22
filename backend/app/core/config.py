@@ -18,5 +18,8 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
     ]
 
+    # xAI / Grok Voice (TTS). Required for Ara speech.
+    XAI_API_KEY: str = ""
+
 
 settings = Settings()

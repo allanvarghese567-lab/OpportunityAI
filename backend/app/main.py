@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import auth, projects, research, execution, enterprise
+from app.api import auth, projects, research, execution, enterprise, voice
 from app.core.config import settings
 from app.core.rate_limit import RateLimitMiddleware
 from app.db.base import Base
@@ -40,6 +40,7 @@ app.include_router(projects.router, prefix=settings.API_V1_STR)
 app.include_router(research.router, prefix=settings.API_V1_STR)
 app.include_router(execution.router, prefix=settings.API_V1_STR)
 app.include_router(enterprise.router, prefix=settings.API_V1_STR)
+app.include_router(voice.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health")
