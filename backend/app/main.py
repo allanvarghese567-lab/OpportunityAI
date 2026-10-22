@@ -3,8 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import auth, projects, research, execution
+from app.api import auth, projects, research, execution, enterprise
 from app.core.config import settings
+from app.core.rate_limit import RateLimitMiddleware
 from app.db.base import Base
 from app.db.session import engine
 from app.models import *  # noqa: F401,F403
@@ -32,10 +33,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.add_middleware(RateLimitMiddleware, default_limit=120, auth_limit=20, window=60)
+
 app.include_router(auth.router, prefix=settings.API_V1_STR)
 app.include_router(projects.router, prefix=settings.API_V1_STR)
 app.include_router(research.router, prefix=settings.API_V1_STR)
 app.include_router(execution.router, prefix=settings.API_V1_STR)
+app.include_router(enterprise.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health")
