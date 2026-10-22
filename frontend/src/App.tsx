@@ -11,6 +11,7 @@ import OpportunityDetailPage from "./pages/OpportunityDetailPage";
 import ApprovalPage from "./pages/ApprovalPage";
 import ExecutionPage from "./pages/ExecutionPage";
 import ReportPage from "./pages/ReportPage";
+import OrganizationPage from "./pages/OrganizationPage";
 import Layout from "./components/Layout";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/projects/:id/approval" element={<ApprovalPage />} />
         <Route path="/projects/:id/execution" element={<ExecutionPage />} />
         <Route path="/projects/:id/report" element={<ReportPage />} />
+        <Route path="/enterprise" element={<OrganizationPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

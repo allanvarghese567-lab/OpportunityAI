@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, PlusCircle, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, PlusCircle, LogOut, Menu, X, Building2 } from "lucide-react";
 
 interface LayoutProps {
   user: { email: string; full_name?: string };
@@ -15,6 +15,7 @@ export default function Layout({ user, onLogout, children }: LayoutProps) {
   const nav = [
     { to: "/", label: "Dashboard", icon: LayoutDashboard },
     { to: "/projects/new", label: "New Project", icon: PlusCircle },
+    { to: "/enterprise", label: "Enterprise", icon: Building2 },
   ];
 
   return (
