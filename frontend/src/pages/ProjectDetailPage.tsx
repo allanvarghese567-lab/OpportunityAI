@@ -75,13 +75,30 @@ export default function ProjectDetailPage() {
             </div>
           )}
 
-          <div className="pt-4 border-t flex items-center justify-between">
-            <p className="text-sm text-slate-500">Configuration confirmed. Ready to run multi-agent research.</p>
-            <Link to={`/projects/${projectId}/research`}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-              <FlaskConical className="w-4 h-4" />
-              Open Research Workspace
-            </Link>
+          <div className="pt-4 border-t space-y-3">
+            <p className="text-sm text-slate-500">Configuration confirmed. Continue the workflow:</p>
+            <div className="flex flex-wrap gap-2">
+              <Link to={`/projects/${projectId}/research`}
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+                <FlaskConical className="w-4 h-4" /> Research
+              </Link>
+              <Link to={`/projects/${projectId}/opportunities`}
+                className="inline-flex items-center gap-2 border px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">
+                Opportunities
+              </Link>
+              <Link to={`/projects/${projectId}/approval`}
+                className="inline-flex items-center gap-2 border px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">
+                Approval
+              </Link>
+              <Link to={`/projects/${projectId}/execution`}
+                className="inline-flex items-center gap-2 border px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">
+                Execution
+              </Link>
+              <Link to={`/projects/${projectId}/report`}
+                className="inline-flex items-center gap-2 border px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">
+                Report
+              </Link>
+            </div>
           </div>
         </div>
       ) : (
