@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { projectsApi } from "../lib/api";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, FlaskConical } from "lucide-react";
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,10 +68,20 @@ export default function ProjectDetailPage() {
             </div>
           </div>
 
-          <div className="pt-4 border-t">
-            <p className="text-sm text-slate-500">
-              Phase 2 will add the multi-agent research workflow here. You will be able to start a research run, watch agents work in real time, and inspect discovered opportunities.
-            </p>
+          {latestConfig.notes && (
+            <div>
+              <p className="text-slate-500 text-sm mb-1">Notes</p>
+              <p className="text-sm">{latestConfig.notes}</p>
+            </div>
+          )}
+
+          <div className="pt-4 border-t flex items-center justify-between">
+            <p className="text-sm text-slate-500">Configuration confirmed. Ready to run multi-agent research.</p>
+            <Link to={`/projects/${projectId}/research`}
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+              <FlaskConical className="w-4 h-4" />
+              Open Research Workspace
+            </Link>
           </div>
         </div>
       ) : (
