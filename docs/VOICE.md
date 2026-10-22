@@ -1,32 +1,23 @@
-# ARTHA AI — Voice (Ara)
+# ARTHA AI — Voice
 
-ARTHA uses **Ara**, a Grok / xAI voice: warm, friendly, human-centered.
+## Two modes (no
+| Mode | Needs key? | Quality |
+|------|------------|--------|
+| **Browser** (default) | **No** | OS / browser voices |
+| **Ara (Grok TTS)** | Yes — `XAI_API_KEY` | Grok **Ara** |
 
-## Setup
+Speak works immediately with the free browser voice. Add an xAI key later to unlock Ara.
 
-1. Get an API key at https://console.x.ai
-2. In `backend/.env`:
+## Free setup
+
+Nothing to configure. Click **Speak** on Research or Report. Best in Chrome or Edge.
+
+## Optional Ara
 
 ```env
 XAI_API_KEY=xai-your-key-here
 ```
 
-3. Restart the API server
+## Note
 
-## API
-
-| Endpoint | Description |
-|----------|-------------|
-| `GET /api/v1/voice/status` | Whether voice is enabled + allowed voices |
-| `POST /api/v1/voice/speak` | `{ "text": "...", "voice_id": "ara" }` → MP3 |
-
-Default voice is **ara**.
-
-## UI
-
-- Research Workspace — Speak recommendation
-- Project Report — Speak report summary
-
-## Brand sample
-
-> Welcome to ARTHA AI. Economic intelligence. Opportunity. Wealth creation.
+Grok **Ara** requires xAI. Without a key, ARTHA uses device voices — useful for demos, not the same as Ara.
