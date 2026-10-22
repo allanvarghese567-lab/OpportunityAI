@@ -8,6 +8,9 @@ import ProjectDetailPage from "./pages/ProjectDetailPage";
 import ResearchWorkspacePage from "./pages/ResearchWorkspacePage";
 import OpportunityExplorerPage from "./pages/OpportunityExplorerPage";
 import OpportunityDetailPage from "./pages/OpportunityDetailPage";
+import ApprovalPage from "./pages/ApprovalPage";
+import ExecutionPage from "./pages/ExecutionPage";
+import ReportPage from "./pages/ReportPage";
 import Layout from "./components/Layout";
 
 function App() {
@@ -16,28 +19,12 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    authApi
-      .me()
-      .then(setUser)
-      .catch(() => localStorage.removeItem("token"))
-      .finally(() => setLoading(false));
+    if (!token) { setLoading(false); return; }
+    authApi.me().then(setUser).catch(() => localStorage.removeItem("token")).finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-slate-400">Loading…</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <LoginPage onLogin={setUser} />;
-  }
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-slate-400">Loading…</div></div>;
+  if (!user) return <LoginPage onLogin={setUser} />;
 
   return (
     <Layout user={user} onLogout={() => { localStorage.removeItem("token"); setUser(null); }}>
@@ -48,6 +35,9 @@ function App() {
         <Route path="/projects/:id/research" element={<ResearchWorkspacePage />} />
         <Route path="/projects/:id/opportunities" element={<OpportunityExplorerPage />} />
         <Route path="/projects/:id/opportunities/:oppId" element={<OpportunityDetailPage />} />
+        <Route path="/projects/:id/approval" element={<ApprovalPage />} />
+        <Route path="/projects/:id/execution" element={<ExecutionPage />} />
+        <Route path="/projects/:id/report" element={<ReportPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

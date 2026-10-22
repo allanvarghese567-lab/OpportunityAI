@@ -2,71 +2,52 @@
 
 **AI-Powered Opportunity Research & Execution Platform**
 
-Multi-agent business opportunity platform — **React + TypeScript + FastAPI + Python**.
+## Current Status: Phase 4 – Execution Control ✅
 
-## Current Status: Phase 3 – Analysis & Validation ✅
-
-You can now:
+Full end-to-end flow:
 
 1. Register / Login  
-2. Create projects & configure objectives  
-3. Run live multi-agent research  
-4. **Explore opportunities** (filter, sort, cards/table)  
-5. **Open opportunity detail** with tabs: Overview · Financial · Scenarios · Risk · Evidence  
-6. See scenario trees + recovery alternatives  
-7. Get a ranked recommendation  
+2. Create project & configure objective  
+3. Run multi-agent research  
+4. Explore opportunities & scenarios  
+5. **Approve or reject** the recommended strategy  
+6. **Authorize & execute** individual actions (backend-enforced)  
+7. **Track outcomes** and view auditable report  
 
 ## Quick Start
 
 ```bash
 docker-compose up -d db
-
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
+cd backend && python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt && cp .env.example .env
 uvicorn app.main:app --reload --port 8000
 
-cd frontend
-npm install && npm run dev
+cd frontend && npm install && npm run dev
 ```
 
 - App → http://localhost:5173  
-- API docs → http://localhost:8000/docs  
+- API → http://localhost:8000/docs  
 
-## Phase 3 Features
+## Phase 4 Features
 
 | Component | Status |
 |-----------|--------|
-| Scenario Planner agent | ✅ |
-| Scenario trees + recovery alternatives | ✅ |
-| Opportunity Explorer (search, filter, sort, cards/table) | ✅ |
-| Opportunity Detail (5 tabs) | ✅ |
-| Financial analysis panel | ✅ |
-| Risk & evidence panels | ✅ |
+| Approval model & API | ✅ |
+| Execution actions + backend auth gates | ✅ |
+| Risk-limit checks on action creation | ✅ |
+| Authorize → Execute flow | ✅ |
+| Outcome tracking | ✅ |
+| Reporting agent (no invented numbers) | ✅ |
+| Approval / Execution / Report UIs | ✅ |
 
-### Agents
+## Security (from master prompt)
 
-1. Configuration Validator  
-2. Market Researcher  
-3. Financial Analyst  
-4. **Scenario Planner**  
-5. Risk & Evidence Validator  
-6. Executor / Strategy Selector  
+1. Persist workflow state in PostgreSQL  
+2. Separate AI reasoning from money math  
+3. Enforce approvals in FastAPI — every sensitive action checked server-side  
 
-## User flow
+## Next: Phase 5
 
-```
-Dashboard → New Project → Config Wizard → Confirm
-       → Project Detail → Research Workspace → Start Research
-       → Opportunity Explorer → Opportunity Detail (tabs)
-```
+Dashboard charts · mobile polish · tests · deployment notes  
 
-## Next: Phase 4
-
-- Approval flows  
-- Execution action authorization  
-- Outcome tracking  
-- Reporting agent  
-
-Full specification: [MASTER_DEVELOPMENT_PROMPT.md](./MASTER_DEVELOPMENT_PROMPT.md)
+Full spec: [MASTER_DEVELOPMENT_PROMPT.md](./MASTER_DEVELOPMENT_PROMPT.md)
