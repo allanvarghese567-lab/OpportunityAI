@@ -1,6 +1,7 @@
 """
-Multi-agent research workflow for Phase 2.
+Multi-agent research workflow (Phase 2 + Phase 3 enhancements).
 Sequential orchestrator that emits SSE events.
+Includes Scenario Planner agent.
 """
 
 import asyncio
@@ -8,6 +9,7 @@ from datetime import datetime, timezone
 from typing import Any, AsyncGenerator, Dict, Optional
 
 from app.adapters.mock_adapter import MockResearchAdapter
+from app.agents.scenario_planner import plan_scenarios
 from app.services.finance import build_scenario_set, calculate_net_profit
 
 
@@ -41,9 +43,8 @@ async def run_research_workflow(
     risk_limits = config.get("risk_limits", {})
     max_capital = float(risk_limits.get("max_capital_at_risk", starting_capital))
 
-    # Agent 1: Configuration Validator
     yield AgentEvent("configuration_validator", "start", "Validating configuration…")
-    await asyncio.sleep(0.4)
+    await asyncio.sleep(0.3)
 
     warnings = []
     if target <= starting_capital:
@@ -56,11 +57,10 @@ async def run_research_workflow(
             yield AgentEvent("configuration_validator", "warning", w)
     else:
         yield AgentEvent("configuration_validator", "result", "Configuration looks valid.", {"status": "valid"})
-    await asyncio.sleep(0.3)
+    await asyncio.sleep(0.25)
 
-    # Agent 2: Market Researcher
     yield AgentEvent("market_researcher", "start", "Searching for opportunities…")
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0.4)
 
     adapter = MockResearchAdapter()
     candidates = await adapter.search(
@@ -71,11 +71,10 @@ async def run_research_workflow(
     )
 
     yield AgentEvent("market_researcher", "progress", f"Found {len(candidates)} candidate opportunities.", {"count": len(candidates)})
-    await asyncio.sleep(0.3)
+    await asyncio.sleep(0.25)
 
-    # Agent 3: Financial Analyst
     yield AgentEvent("financial_analyst", "start", "Running financial calculations…")
-    await asyncio.sleep(0.4)
+    await asyncio.sleep(0.3)
 
     analyzed = []
     for cand in candidates:
@@ -95,6 +94,7 @@ async def run_research_workflow(
             sc["meets_target"] = float(sc["ending_cash"]) >= target
 
         analyzed.append({
+            "id": f"opp-{len(analyzed)+1}",
             "name": cand.name,
             "category": cand.category,
             "target_customer": cand.target_customer,
@@ -125,11 +125,21 @@ async def run_research_workflow(
         })
 
     yield AgentEvent("financial_analyst", "result", f"Analyzed {len(analyzed)} opportunities with full scenario sets.", {"opportunities": analyzed})
-    await asyncio.sleep(0.3)
+    await asyncio.sleep(0.25)
 
-    # Agent 5: Risk & Evidence Validator
+    # Scenario Planner (Phase 3)
+    yield AgentEvent("scenario_planner", "start", "Building scenario trees and recovery options…")
+    await asyncio.sleep(0.35)
+
+    for opp in analyzed:
+        plan = plan_scenarios(opp, starting_capital, target)
+        opp["scenario_plan"] = plan
+
+    yield AgentEvent("scenario_planner", "result", f"Scenario trees generated for {len(analyzed)} opportunities.", {"opportunities": analyzed})
+    await asyncio.sleep(0.25)
+
     yield AgentEvent("risk_validator", "start", "Validating evidence and risk…")
-    await asyncio.sleep(0.4)
+    await asyncio.sleep(0.3)
 
     validated = []
     for opp in analyzed:
@@ -144,16 +154,15 @@ async def run_research_workflow(
         validated.append(opp)
 
     yield AgentEvent("risk_validator", "result", f"Validation complete. {sum(1 for o in validated if o['verification_status'] != 'REJECTED')} candidates remain.", {"opportunities": validated})
-    await asyncio.sleep(0.3)
+    await asyncio.sleep(0.25)
 
-    # Agent 6: Executor / Strategy Selector
     yield AgentEvent("executor", "start", "Ranking strategies…")
-    await asyncio.sleep(0.4)
+    await asyncio.sleep(0.3)
 
     eligible = [o for o in validated if o["verification_status"] != "REJECTED"]
 
     def score(o):
-        s = 0
+        s = 0.0
         if o["confidence"] == "high":
             s += 3
         elif o["confidence"] == "medium":
