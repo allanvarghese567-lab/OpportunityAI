@@ -5,6 +5,7 @@ import { projectsApi } from "../lib/api";
 import {
   PlusCircle, FolderOpen, CheckCircle2, Search, ShieldCheck, Trophy, BarChart3,
 } from "lucide-react";
+import SpeakButton from "../components/SpeakButton";
 
 const STATUS_META: Record<string, { label: string; color: string; bg: string }> = {
   draft: { label: "Draft", color: "text-slate-600", bg: "bg-slate-100" },
@@ -43,10 +44,16 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-slate-500 mt-1">Your opportunity research overview</p>
         </div>
-        <Link to="/projects/new"
-          className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shrink-0">
-          <PlusCircle className="w-4 h-4" /> New Project
-        </Link>
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          <SpeakButton
+            label="Speak"
+            text={`Welcome to ARTHA AI. You have ${stats.total} projects. ${stats.configured} configured, ${stats.researching} researching, ${stats.approved} approved, ${stats.completed} completed. Discover value, engineer opportunity, build wealth.`}
+          />
+          <Link to="/projects/new"
+            className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+            <PlusCircle className="w-4 h-4" /> New Project
+          </Link>
+        </div>
       </div>
 
       {!isLoading && projects.length > 0 && (
