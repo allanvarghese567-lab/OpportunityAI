@@ -2,58 +2,33 @@
 
 **AI-Powered Opportunity Research & Execution Platform**
 
-Multi-agent business opportunity platform — **React + TypeScript + FastAPI + Python**.
-
-## Status: Phase 5 – Production Ready ✅
+## Status: Phase 6 – Enterprise & Scaling ✅
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| 1 | Foundation (auth, projects, config wizard) | ✅ |
-| 2 | Research Core (agents, SSE, mock adapter) | ✅ |
-| 3 | Analysis (scenarios, explorer, detail tabs) | ✅ |
-| 4 | Execution (approvals, actions, outcomes, reports) | ✅ |
-| 5 | Polish (dashboard, mobile, tests, deployment) | ✅ |
+| 1–5 | Foundation through polish | ✅ |
+| 6 | Enterprise (orgs, RBAC, API keys, webhooks, audit, scaling) | ✅ |
 
 ## Quick Start
 
 ```bash
 docker-compose up -d db
-cd backend && python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt && cp .env.example .env
-uvicorn app.main:app --reload --port 8000
-
-cd frontend && npm install && npm run dev
+cd backend && source .venv/bin/activate && uvicorn app.main:app --reload --port 8000
+cd frontend && npm run dev
 ```
 
-- App → http://localhost:5173  
-- API → http://localhost:8000/docs  
+## Phase 6 features
 
-## End-to-end flow
+- **Organizations** – multi-tenant with slug + plan
+- **RBAC** – owner · admin · member · viewer
+- **API Keys** – scoped `oai_…` keys
+- **Webhooks** – HMAC-signed outbound events
+- **Audit log** – immutable action trail
+- **Rate limiting** – middleware (Redis path in SCALING.md)
+- **Scaling docs** – horizontal API, SSE, capacity
 
-```
-Dashboard (stats + status chart)
-  → New Project (7-step config wizard)
-  → Research Workspace → live agent SSE
-  → Opportunity Explorer / Detail
-  → Approve Strategy
-  → Execution Control (authorize → execute)
-  → Project Report
-```
+## Docs
 
-## Tests
-
-```bash
-cd backend && source .venv/bin/activate && pytest tests/ -v
-```
-
-## Deployment
-
-See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md).
-
-## Security (master prompt)
-
-1. Persist workflow state in PostgreSQL  
-2. Separate AI reasoning from money math  
-3. Enforce approvals and budget limits in FastAPI  
-
-Full specification: [MASTER_DEVELOPMENT_PROMPT.md](./MASTER_DEVELOPMENT_PROMPT.md)
+- [Deployment](./docs/DEPLOYMENT.md)
+- [Scaling](./docs/SCALING.md)
+- [Master prompt](./MASTER_DEVELOPMENT_PROMPT.md)
